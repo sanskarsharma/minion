@@ -17,6 +17,23 @@ from numpy import base_repr
 import validators
 from urllib.parse import urlparse
 
+@app_instance.route("/", methods=["POST", "GET"])
+def home():
+
+    if request.method == "POST" :
+        short_url = request.form.get("short_url")
+        links_obj = Links.query.filter_by(short_url= short_url).first_or_404()
+
+        if links_obj is not None :
+            links_obj.count = links_obj.count + 1 
+            db_instance.session.add(links_obj)
+            db_instance.session.commit()
+
+        return redirect(links_obj.long_url)
+    
+    return " <h4>Hackerearth url-shortener service demo.</h4>  This domain is currently being used for a project demo, visit my other profiles at <a href=\'https://linkedin.com/in/sanskarssh\' target=\'_blank\'>LinkedIn</a>, <a href= \'https://github.com/sanskarsharma\' target=\'_blank\'>Github<a/>"
+
+
 
 
 @app_instance.route("/fetch/short-url", methods=["POST", "GET"])
@@ -60,7 +77,7 @@ def fetch_short_url():
 
 
 
-@app_instance.route("/fetch/long-url", methods=["POST"])
+@app_instance.route("/fetch/long-url", methods=["POST", "GET"])
 def fetch_long_url():
 
     short_url = ""
@@ -169,7 +186,7 @@ def redirect_short_url(short_url):
     return redirect(links_obj.long_url)
 
 
-@app_instance.route("/fetch/count", methods=["POST"])
+@app_instance.route("/fetch/count", methods=["POST", "GET"])
 def count_usage():
 
     short_url = ""
@@ -225,7 +242,7 @@ def count_usage():
 
 
 
-@app_instance.route("/fetch/short-urls", methods=["POST"])
+@app_instance.route("/fetch/short-urls", methods=["POST", "GET"])
 def fetch_short_urls():
     
     long_urls = ""
@@ -283,7 +300,7 @@ def fetch_short_urls():
 
 
 
-@app_instance.route("/fetch/long-urls", methods=["POST"])
+@app_instance.route("/fetch/long-urls", methods=["POST", "GET"])
 def fetch_long_urls():
     
 

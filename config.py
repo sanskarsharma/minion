@@ -8,7 +8,6 @@ class Config(object):
     MYSQL_DB_PASSWORD = os.environ.get("MYSQL_DB_PASSWORD")
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://" + MYSQL_DB_USERNAME + ":" + MYSQL_DB_PASSWORD + "@localhost/urlshortener"
     
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:mysql.2996@localhost/urlshortener"
     
 
     #  os.environ.get('DATABASE_URL') or \

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>minion - url shortener</title>
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        
+        
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">minion</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar" >
+    <ul class="navbar-nav" >
+      <li class="nav-item" >
+        <a class="nav-link" data-toggle="modal" href="#modal_about_project">About</a>
+      </li>
+     
+    </ul>
+  </div> 
+</nav>
+
+<br>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            
+           
+                <div class="form-group col-md-10">
+                  <label for="long_url_inp">Enter long url :</label>
+                  <input type="text" class="form-control" id="long_url_inp" >
+                </div>
+                
+                
+            <div class="col-md-2">
+                 <button class="btn btn-outline-primary" id= "get_short_url_btn" >minify</button>
+            </div>
+           
+
+        </div>
+        
+    </div>
+    
+    <br><br>
+
+    <div class="row">
+        
+        <div class="col-md-12">
+            
+            <a id="short_url_response" href="" target="_blank"></a>
+        </div>
+        
+    </div>
+    
+</div>
+
+
+
+<div id="modal_about_project" class="modal fade">
+        <div class="modal-dialog  ">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            About this app
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        This is an api based url shortener service with bulk link generation and link access counter.
+                        <br>
+                        It is made upon python flask framework 
+                        <br>
+                        Its an open source project. <a href="https://github.com/sanskarsharma/minion">Visit repo</a>
+                        <br>
+                        Developed by <a href="https://github.com/sanskarsharma">sanskarsharma</a>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+
+        </div>
+    </div>
+
+
+<script>
+
+     $(document).ready(function(){
+         
+        $("#get_short_url_btn").click(function(){
+            console.log("CLICKKEEEEEEEEED")
+            
+            
+            long_url = document.getElementById("long_url_inp").value;
+            console.log(long_url)
+            
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.responseText);
+                      var res=JSON.parse(this.responseText);
+                      $("#short_url_response").attr("href", "http://"+res['short_url']);
+                      
+                      document.getElementById('short_url_response').innerHTML=res['short_url'];
+                      
+                }
+            };
+            var parm='long_url=' + long_url;
+            xhttp.open("POST", "/fetch/short-url", false);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(parm);
+                 
+                 
+             
+         });
+         
+         
+         
+     });
+    
+    
+    
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

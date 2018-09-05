@@ -25,13 +25,13 @@ def home():
         links_obj = Links.query.filter_by(short_url= short_url).first_or_404()
 
         if links_obj is not None :
-            links_obj.count = links_obj.count + 1 
+            links_obj.count = links_obj.count + 1
             db_instance.session.add(links_obj)
             db_instance.session.commit()
 
         return redirect(links_obj.long_url)
-    
-    return " <h4>Hackerearth url-shortener service demo.</h4>  This domain is currently being used for a project demo, visit my other profiles at <a href=\'https://linkedin.com/in/sanskarssh\' target=\'_blank\'>LinkedIn</a>, <a href= \'https://github.com/sanskarsharma\' target=\'_blank\'>Github<a/>"
+
+    return render_template("home.html")    #" <h4>Hackerearth url-shortener service demo.</h4>  This domain is currently being used for a project demo, visit my other profiles at <a href=\'https://linkedin.com/in/sanskarssh\' target=\'_blank\'>LinkedIn</a>, <a href= \'https://github.com/sanskarsharma\' target=\'_blank\'>Github<a/>"
 
 
 
@@ -55,7 +55,7 @@ def fetch_short_url():
 
         response_json = json.dumps(response_dict)
         return response_json
-    
+
 
     valid = validators.url(long_url)
     if not valid :
@@ -70,10 +70,10 @@ def fetch_short_url():
     response_dict["short_url"] = short_url
     response_dict["status"] = "OK"
     response_dict["status_codes"] = []
-    
+
     response_json = json.dumps(response_dict)
     return response_json
- 
+
 
 
 
@@ -107,14 +107,14 @@ def fetch_long_url():
     if parse_result.scheme != "" :
 
         if parse_result.netloc == Config.DOMAIN_NAME :
-            path = parse_result.path[1:] 
-            
+            path = parse_result.path[1:]
+
             links_obj = Links.query.filter_by(short_url=path).first()
-            
+
             if links_obj is None :
                 response_dict["status"] = "FAILED"
                 response_dict["status_codes"] = ["SHORT_URLS_NOT_FOUND"]
-            
+
             else :
                 long_url = links_obj.long_url
 
@@ -125,14 +125,14 @@ def fetch_long_url():
             response_json = json.dumps(response_dict)
 
             return response_json
-    
+
         response_dict["status"] = "FAILED"
         response_dict["status_codes"] = ["SHORT_URLS_NOT_FOUND"]
-        
+
         response_json = json.dumps(response_dict)
 
         return response_json
-    
+
     else :
 
         domain = short_url.split("/")[0]
@@ -145,19 +145,19 @@ def fetch_long_url():
 
             response_dict["status"] = "FAILED"
             response_dict["status_codes"] = ["SHORT_URLS_NOT_FOUND"]
-        
+
             response_json = json.dumps(response_dict)
 
             return response_json
-    
+
 
 
         links_obj = Links.query.filter_by(short_url=path).first()
-            
+
         if links_obj is None :
             response_dict["status"] = "FAILED"
             response_dict["status_codes"] = ["SHORT_URLS_NOT_FOUND"]
-        
+
         else :
             long_url = links_obj.long_url
 
@@ -178,7 +178,7 @@ def redirect_short_url(short_url):
     links_obj = Links.query.filter_by(short_url= short_url).first_or_404()
 
     if links_obj is not None :
-        links_obj.count = links_obj.count + 1 
+        links_obj.count = links_obj.count + 1
         db_instance.session.add(links_obj)
         db_instance.session.commit()
 
@@ -217,18 +217,18 @@ def count_usage():
 
         response_dict["status"] = "FAILED"
         response_dict["status_codes"] = ["SHORT_URLS_NOT_FOUND"]
-    
+
         response_json = json.dumps(response_dict)
 
         return response_json
 
 
     links_obj = Links.query.filter_by(short_url=path).first()
-        
+
     if links_obj is None :
         response_dict["status"] = "FAILED"
         response_dict["status_codes"] = ["SHORT_URLS_NOT_FOUND"]
-    
+
     else :
         count = links_obj.count
 
@@ -244,7 +244,7 @@ def count_usage():
 
 @app_instance.route("/fetch/short-urls", methods=["POST", "GET"])
 def fetch_short_urls():
-    
+
     long_urls = ""
 
     if request.method == "POST" :
@@ -280,19 +280,19 @@ def fetch_short_urls():
         response_dict["invalid_urls"] = invalid_urls
         response_dict["status"] = "FAILED"
         response_dict["status_codes"] = ["INVALID_URLS"]
-        
+
         response_json = json.dumps(response_dict)
         return response_json
 
     short_urls_dict = {}
     for url in long_url_list :
         short_urls_dict[url] = get_short_url(url)
-    
+
     response_dict["short_urls"] = short_urls_dict
     response_dict["invalid_urls"] = []
     response_dict["status"] = "OK"
     response_dict["status_codes"] = []
-        
+
     response_json = json.dumps(response_dict)
     return response_json
 
@@ -302,7 +302,7 @@ def fetch_short_urls():
 
 @app_instance.route("/fetch/long-urls", methods=["POST", "GET"])
 def fetch_long_urls():
-    
+
 
     short_urls = ""
 
@@ -333,7 +333,7 @@ def fetch_long_urls():
         url_hash = url.split("/")[1]
 
         links_obj = Links.query.filter_by(short_url=url_hash).first()
-        
+
         if links_obj is None :
             invalid_flag = True
             invalid_urls.append(url)
@@ -342,35 +342,35 @@ def fetch_long_urls():
         response_dict["invalid_urls"] = invalid_urls
         response_dict["status"] = "FAILED"
         response_dict["status_codes"] = ["SHORT_URLS_NOT_FOUND"]
-        
+
         response_json = json.dumps(response_dict)
         return response_json
 
     long_urls_dict = {}
-    
+
     for url in short_url_list :
         url_hash = url.split("/")[1]
         links_obj = Links.query.filter_by(short_url=url_hash).first()
         long_urls_dict[url] = links_obj.long_url
 
-    
+
     response_dict["long_urls"] = long_urls_dict
     response_dict["invalid_urls"] = []
     response_dict["status"] = "OK"
     response_dict["status_codes"] = []
-        
+
     response_json = json.dumps(response_dict)
     return response_json
 
 
 
-    
+
 @app_instance.route("/clean-urls", methods=["GET"])
 def clean_urls():
     rows_deleted = Links.query.delete()
     db_instance.session.commit()
     return str(rows_deleted) + " rows deleted"
-   
+
 
 
 
@@ -384,7 +384,7 @@ def get_short_url(long_url):
 
     timestamp = time.time()
     n = long_url + "__timestamp__"+str(timestamp)
-    
+
     # getting md5 hash of long url
     hex_data = hashlib.md5(n.encode('utf-8')).hexdigest()
     scale = 16 # since md5 is hexdecimal
@@ -403,7 +403,7 @@ def get_short_url(long_url):
 
 	# to get decimal value of the binary 43 bits
     deci = int(bin_str_sliced,2)
-    
+
     short_url = str(base_repr(number=deci, base=36)).swapcase()
 
     links_obj = Links(long_url=long_url, short_url=short_url, count=0 )
@@ -419,7 +419,7 @@ def get_short_url(long_url):
 
 
     # adding domain name before returning
-    short_url = Config.DOMAIN_NAME + "/" + short_url    
+    short_url = Config.DOMAIN_NAME + "/" + short_url
 
     return short_url
 
@@ -461,6 +461,6 @@ def get_another_slice(bin_str):
 
 
 
-    
 
-    
+
+

@@ -438,8 +438,10 @@ def get_another_slice(bin_str):
 
 
 
+@app_instance.route("/login-success", methods=["GET"])
+def loginsuccess():
 
-
+    return render_template("login_success.html")
 
 
 

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+<script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+
+<script>
+  // Initialize Firebase app script
+  var config = {
+    apiKey: "AIzaSyBlszDs2bPzkX9QX7WaGE6J_cIE074-BCY",
+    authDomain: "minion-96.firebaseapp.com",
+    databaseURL: "https://minion-96.firebaseio.com",
+    projectId: "minion-96",
+    storageBucket: "minion-96.appspot.com",
+    messagingSenderId: "841099827039"
+  };
+  firebase.initializeApp(config);
+
+</script>
+
+
+</head>
+
+
+
+
+
+
+
+
+<body>
+<h5>HELLLOOOO YOU HVAE  BEEN LOGGED IN </h5>
+
+
+<!-- A simple example script to add text to the page that displays the user's Display Name and Email -->
+ <script>
+ // Track the UID of the current user.
+ var currentUid = null;
+ firebase.auth().onAuthStateChanged(function(user) {
+          // onAuthStateChanged listener triggers every time the user ID token changes.
+          // This could happen when a new user signs in or signs out.
+          // It could also happen when the current user ID token expires and is refreshed.
+          if (user && user.uid != currentUid) {
+               // Update the UI when a new user signs in.
+               // Otherwise ignore if this is a token refresh.
+               // Update the current user UID.
+           currentUid = user.uid;
+           document.body.innerHTML = '<h1> Congrats ' + user.name + ', you are done! </h1> <h2> Now get back to what you love building. </h2> <h2> Need to verify your email address or reset your password? Firebase can handle all of that for you using the email you provided: ' + user.email + '. <h/2>';
+          } else {
+           // Sign out operation. Reset the current user UID.
+           currentUid = null;
+           console.log("no user signed in");
+          }
+ });
+ </script>
+
+ <h1>Congrats you're done! Now get back to what you love building.</h1>
+
+</body>
+</html>

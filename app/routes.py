@@ -16,6 +16,8 @@ import hashlib
 from numpy import base_repr
 import validators
 from urllib.parse import urlparse
+from firebase_admin import auth
+
 
 @app_instance.route("/", methods=["POST", "GET"])
 def home():
@@ -33,6 +35,11 @@ def home():
 
     return render_template("home.html")    #" <h4>Hackerearth url-shortener service demo.</h4>  This domain is currently being used for a project demo, visit my other profiles at <a href=\'https://linkedin.com/in/sanskarssh\' target=\'_blank\'>LinkedIn</a>, <a href= \'https://github.com/sanskarsharma\' target=\'_blank\'>Github<a/>"
 
+
+@app_instance.route("/login", methods=["POST", "GET"])
+def firebase_login():
+    # user = auth.get_user()
+    return render_template("firebase_login.html")
 
 
 

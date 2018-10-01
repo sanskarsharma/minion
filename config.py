@@ -1,5 +1,7 @@
 import os
 from dotenv import load_dotenv
+import firebase_admin
+from firebase_admin import credentials
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
@@ -26,3 +28,6 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     DOMAIN_NAME= os.environ.get("DOMAIN_NAME")
+
+    cred = credentials.Certificate('minion-96-firebase-adminsdk-zwxsr-b925d1b742.json')
+    default_app = firebase_admin.initialize_app(cred)

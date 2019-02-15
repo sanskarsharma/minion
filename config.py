@@ -4,25 +4,19 @@ from dotenv import load_dotenv
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
+
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-can-easily-guess'
 
-    MYSQL_DB_HOST = os.environ.get("MYSQL_DB_HOST")
-    MYSQL_DB_NAME = os.environ.get("MYSQL_DB_NAME")
-
-    MYSQL_DB_USERNAME = os.environ.get("MYSQL_DB_USERNAME")
-    MYSQL_DB_PASSWORD = os.environ.get("MYSQL_DB_PASSWORD")
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://" + MYSQL_DB_USERNAME + ":" + MYSQL_DB_PASSWORD + "@"+ MYSQL_DB_HOST +"/" + MYSQL_DB_NAME
-
-#    MYSQL_DB_USERNAME = os.environ.get("MYSQL_DB_USERNAME")
-#    MYSQL_DB_PASSWORD = os.environ.get("MYSQL_DB_PASSWORD")
-#    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://" + MYSQL_DB_USERNAME + ":" + MYSQL_DB_PASSWORD + "@localhost/urlshortener"
-    
-    
-
-    #  os.environ.get('DATABASE_URL') or \
-    #     'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = '{0}://{1}:{2}@{3}:{4}/{5}'.format(
+        os.environ.get('DB_VENDOR'),
+        os.environ.get('DB_USERNAME'),
+        os.environ.get('DB_PASSWORD'),
+        os.environ.get('DB_HOST'),
+        os.environ.get('DB_PORT'),
+        os.environ.get('DB_NAME')
+    )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    DOMAIN_NAME= os.environ.get("DOMAIN_NAME")
+    DOMAIN_NAME= os.environ.get('DOMAIN_NAME', 'minion')

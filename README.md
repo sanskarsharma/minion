@@ -7,36 +7,49 @@ Demo is live on http://m96.pythonanywhere.com
 ## About project
 - made using python Flask framework.
 - Database used is MySQL, managed by SQLAlchemy
+- docker used for simplified deployment
 
 ## Prerequisites for setup
-Python3 with virtualenv and 
-MySQL database server
+docker
 
 
 ## Build / Run 
--> create and activate a python virtualenv
+-> cd /minion 
 
--> `$ pip install -r requirements.txt`
+-> `$ nano mysql.env`
+
+-> enter below values for env variables in mysql.env file (replaced with db credentials that you want to give for your mysql server) :
+```
+MYSQL_RANDOM_ROOT_PASSWORD=yes
+MYSQL_USER=<blah>
+MYSQL_PASSWORD=<meh>
+MYSQL_DATABASE=<duh>
+```
 
 -> `$ nano .env`
 
--> enter values for env variables in .env file (replaced with your db credentials) :
+
+-> enter below values for env variables in .env file (replaced with db credentials that you want to give for your mysql server) :
 ```
-MYSQL_DB_NAME = DATABASE_NAME
-MYSQL_DB_HOST = DATABASE_HOST
-MYSQL_DB_USERNAME = DATABASE_USER
-MYSQL_DB_USERNAME = DATABASE_PASSWORD
-DOMAIN_NAME = your own domain name
+DB_VENDOR=mysql+pymysql
+DB_HOST=dbserverboi
+DB_PORT=3306
+DB_USERNAME=<blah>
+DB_PASSWORD=<meh>
+DB_NAME=<duh>
+
+SECRET_KEY=<blet>
 ```
--> Note that you need to create an empty database (for DATABASE_NAME ) on your DB server.
 
--> `$ export FLASK_APP=url_shortener_app.py
+`$ docker run --name mysqlboi -d --env-file mysql.env mysql/mysql-server:5.7`
 
-->  $ flask db upgrade
+`$ docker run --name minionboi -d -p 8000:5665 --rm  --env-file=.env --link mysqlboi:dbserverboi sanskarsharma/minion:latest`
 
-->  $ gunicorn --bind 127.0.0.1:5000 wsgi:app_instance
 
--> app will be live on `127.0.0.1:5000`
+
+
+
+-> app will be live on `0.0.0.0:8000`
 
 
 #### Developer contact
@@ -44,4 +57,3 @@ DOMAIN_NAME = your own domain name
  - [ linkedin ](https://linkedin.com/in/sanskarssh)
  - [angel](https://angel.co/sanskarsharma)
 
-     

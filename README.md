@@ -41,9 +41,9 @@ DB_NAME=<duh>
 SECRET_KEY=<blet>
 ```
 
-`$ docker run --name mysqlboi -d --env-file mysql.env mysql/mysql-server:5.7`
+-> `$ docker run --name mysqlboi -d --env-file mysql.env mysql/mysql-server:5.7`
 
-`$ docker run --name minionboi -d -p 8000:5665 --rm  --env-file=.env --link mysqlboi:dbserverboi sanskarsharma/minion:latest`
+-> `$ docker run --name minionboi -d -p 8000:5665 --rm  --env-file=.env --link mysqlboi:dbserverboi sanskarsharma/minion:latest`
 
 
 

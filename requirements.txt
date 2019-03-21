@@ -18,6 +18,7 @@ Jinja2==2.10
 Mako==1.0.7
 MarkupSafe==1.0
 numpy==1.16.1
+psycopg2==2.7.6.1
 pyfcm==1.4.3
 PyMySQL==0.8.0
 python-dateutil==2.6.1
